@@ -171,7 +171,7 @@ def main() -> int:
             subprocess.run(cmd, check=True)
 
         # Optional leading silence for better playback UX
-        silence_ms = int(os.getenv("FEISHU_VOICE_LEADING_SILENCE_MS", "500"))
+        silence_ms = int(os.getenv("FEISHU_VOICE_LEADING_SILENCE_MS", "800"))
         padded_wav_path = add_leading_silence(wav_path, silence_ms)
 
         dur = wav_duration_ms(padded_wav_path)

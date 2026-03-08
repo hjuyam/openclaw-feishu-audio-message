@@ -17,11 +17,9 @@ This repository is a **practical MVP** that emphasizes:
 
 ## Ultra-minimal install (ask your OpenClaw)
 
-If you already have OpenClaw running, you can simply send it the repo link + this README and ask it to generate **OS-specific, copy-pasteable** install steps for your machine.
+Copy the text below and send it to your OpenClaw:
 
-Suggested prompt to your OpenClaw:
-
-> Read https://github.com/hjuyam/openclaw-feishu-audio-message and generate the minimal install steps for my OS (Windows/macOS/Linux). Prefer uv; include ffmpeg install instructions; prefer Piper binary with PIPER_BIN; do not ask me to paste any secrets.
+> Based on my OS (Windows/macOS/Linux), help me install this skill/repo: https://github.com/hjuyam/openclaw-feishu-audio-message/ . Include all required dependencies (Python/ffmpeg/Piper, etc.). Prefer uv; prefer Piper binary and explain how to set PIPER_BIN; do not ask me to paste any secrets (I will fill FEISHU_APP_ID/FEISHU_APP_SECRET myself).
 
 ---
 
@@ -148,7 +146,7 @@ python scripts/cli.py send \
 
 Some clients clip the very beginning of short voice bubbles. We prepend a short silence before encoding.
 
-- Default: `FEISHU_VOICE_LEADING_SILENCE_MS=500`
+- Default: `FEISHU_VOICE_LEADING_SILENCE_MS=800`
 - Set to `0` to disable.
 
 ---
