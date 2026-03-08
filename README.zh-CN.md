@@ -15,6 +15,14 @@
 
 English version: [`README.md`](./README.md)
 
+## 最简安装（交给你的 OpenClaw）
+
+如果你已经在用 OpenClaw，可以直接把**仓库链接 + 本 README** 发给你的 OpenClaw，让它根据你当前机器的系统（Windows/macOS/Linux）生成“可复制执行”的最简安装步骤。
+
+推荐提问模板：
+
+> 请阅读 https://github.com/hjuyam/openclaw-feishu-audio-message ，根据我的操作系统生成最简安装步骤：优先使用 uv；包含 ffmpeg 的安装方式；Piper 优先二进制并说明如何配置 PIPER_BIN；不要让我粘贴任何 secret（我会自己填写 FEISHU_APP_ID/FEISHU_APP_SECRET）。
+
 ---
 
 ## 方案原则（Principles）

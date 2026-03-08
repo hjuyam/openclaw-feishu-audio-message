@@ -15,6 +15,14 @@ This repository is a **practical MVP** that emphasizes:
 
 中文说明见：[`README.zh-CN.md`](./README.zh-CN.md)
 
+## Ultra-minimal install (ask your OpenClaw)
+
+If you already have OpenClaw running, you can simply send it the repo link + this README and ask it to generate **OS-specific, copy-pasteable** install steps for your machine.
+
+Suggested prompt to your OpenClaw:
+
+> Read https://github.com/hjuyam/openclaw-feishu-audio-message and generate the minimal install steps for my OS (Windows/macOS/Linux). Prefer uv; include ffmpeg install instructions; prefer Piper binary with PIPER_BIN; do not ask me to paste any secrets.
+
 ---
 
 ## Principles
