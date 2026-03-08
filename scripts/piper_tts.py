@@ -36,8 +36,10 @@ def main() -> int:
 
     purge_expired()
 
+    piper_bin = os.getenv("PIPER_BIN", "piper")
+
     cmd = [
-        "piper",
+        piper_bin,
         "--model",
         voice,
         "--config",

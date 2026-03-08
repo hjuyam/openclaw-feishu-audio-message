@@ -14,32 +14,58 @@ This repo intentionally **does not** include any models, temp audio artifacts, o
 
 - Python 3.10+
 - `ffmpeg`
-- `piper` CLI (or `pip install piper-tts`)
-- Python deps:
-  - `requests`
-  - `sherpa-onnx` (optional, for ASR)
+- Piper binary (preferred) from releases, or `pip install piper-tts`
+- (Optional) Sherpa-ONNX for offline ASR
 
-> On Debian/Ubuntu you may hit PEP 668 “externally-managed”. Use a venv, or `pip --break-system-packages` if you accept the risk.
+## Quick start (cross-platform)
 
-## Setup
+### 0) Preflight check
 
-1) Create `.env` from `.env.example`
+```bash
+python scripts/doctor.py
+# optional: verify FEISHU_APP_ID/SECRET works
+python scripts/doctor.py --check-feishu
+```
+
+### 1) Setup env
+
+Create `.env` from `.env.example`:
 
 ```bash
 cp .env.example .env
 # fill FEISHU_APP_ID / FEISHU_APP_SECRET
 ```
 
-2) Download models (optional but recommended for MVP)
+If you installed Piper as a standalone binary, set:
 
 ```bash
-bash scripts/download_models.sh
+# example
+PIPER_BIN=/absolute/path/to/piper
 ```
 
-3) Install python deps
+### 2) Download models (cross-platform)
 
 ```bash
-pip install -r requirements.txt
+python scripts/download_models.py
+```
+
+(For macOS/Linux users, `scripts/download_models.sh` is also provided.)
+
+### 3) Install python deps (recommended: uv)
+
+Using **uv** (recommended for Win/macOS/Linux):
+
+```bash
+uv venv
+uv pip install -r requirements.txt
+```
+
+Fallback:
+
+```bash
+python -m venv .venv
+# Windows: .venv\\Scripts\\pip install -r requirements.txt
+# macOS/Linux: .venv/bin/pip install -r requirements.txt
 ```
 
 ## Send a voice bubble (msg_type=audio)
