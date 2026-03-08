@@ -4,6 +4,7 @@
 Commands:
   doctor                Preflight checks
   download-models       Download ASR/TTS models
+  cleanup-inbound       Cleanup OpenClaw inbound audio cache by TTL
   send                  Send a Feishu native voice bubble (msg_type=audio)
   send-test             Send a canned test voice bubble to default target
 
@@ -64,6 +65,17 @@ def cmd_send(args: argparse.Namespace) -> int:
     return run_py("feishu_audio_send.py", argv)
 
 
+def cmd_cleanup_inbound(args: argparse.Namespace) -> int:
+    argv: list[str] = []
+    if args.dir:
+        argv += ["--dir", args.dir]
+    if args.ttl_hours is not None:
+        argv += ["--ttl-hours", str(args.ttl_hours)]
+    if args.dry_run:
+        argv += ["--dry-run"]
+    return run_py("cleanup_inbound.py", argv)
+
+
 def cmd_send_test(args: argparse.Namespace) -> int:
     rid_type = os.getenv("FEISHU_DEFAULT_RECEIVE_ID_TYPE", "open_id")
     rid = os.getenv("FEISHU_DEFAULT_RECEIVE_ID")
@@ -96,6 +108,12 @@ def main() -> int:
     p = sub.add_parser("download-models")
     p.add_argument("--models-dir", help="Where to store downloaded models (default: ./models)")
     p.set_defaults(fn=cmd_download_models)
+
+    p = sub.add_parser("cleanup-inbound")
+    p.add_argument("--dir", help="Inbound dir (default: /root/.openclaw/media/inbound or OPENCLAW_INBOUND_DIR)")
+    p.add_argument("--ttl-hours", type=float, help="TTL hours (default 24 or OPENCLAW_INBOUND_AUDIO_TTL_HOURS)")
+    p.add_argument("--dry-run", action="store_true")
+    p.set_defaults(fn=cmd_cleanup_inbound)
 
     p = sub.add_parser("send")
     p.add_argument("--receive-id-type", required=True, choices=["open_id", "chat_id", "user_id", "union_id"])

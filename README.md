@@ -24,6 +24,7 @@ We provide a unified CLI entrypoint:
 ```bash
 python scripts/cli.py doctor
 python scripts/cli.py download-models
+python scripts/cli.py cleanup-inbound --dry-run
 python scripts/cli.py send-test
 ```
 
@@ -97,6 +98,13 @@ python3 scripts/feishu_audio_send.py \
   --receive-id oc_xxx \
   --text "大家好。"
 ```
+
+## Playback UX tweak (leading silence)
+
+Some clients may clip the very beginning of short audio bubbles. This project can prepend a small silence padding before encoding.
+
+- Default: `FEISHU_VOICE_LEADING_SILENCE_MS=500`
+- Set to `0` to disable.
 
 ## Temp cleanup policy
 

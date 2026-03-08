@@ -58,6 +58,42 @@ def wav_duration_ms(path: Path) -> int:
     return int(frames / rate * 1000)
 
 
+def add_leading_silence(wav_path: Path, silence_ms: int) -> Path:
+    """Create a new wav with leading silence (best-effort).
+
+    This improves the UX for some clients that may clip the beginning.
+    """
+    if silence_ms <= 0:
+        return wav_path
+
+    out_wav = new_temp_path("tts-pad", ".wav")
+    silence_sec = silence_ms / 1000.0
+
+    # Prepend silence: anullsrc (mono/16k) + input wav -> concat
+    cmd = [
+        "ffmpeg",
+        "-y",
+        "-f",
+        "lavfi",
+        "-i",
+        "anullsrc=r=16000:cl=mono",
+        "-t",
+        f"{silence_sec}",
+        "-i",
+        str(wav_path),
+        "-filter_complex",
+        "[0:a][1:a]concat=n=2:v=0:a=1",
+        "-ac",
+        "1",
+        "-ar",
+        "16000",
+        str(out_wav),
+    ]
+
+    subprocess.run(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=True)
+    return out_wav
+
+
 def to_opus(wav_path: Path) -> Path:
     opus_path = new_temp_path("tts", ".opus")
     cmd = [
@@ -123,6 +159,7 @@ def main() -> int:
     purge_expired()
 
     wav_path = None
+    padded_wav_path = None
     opus_path = None
 
     try:
@@ -133,8 +170,12 @@ def main() -> int:
             cmd = [sys.executable, str(Path(__file__).parent / "piper_tts.py"), args.text, str(wav_path)]
             subprocess.run(cmd, check=True)
 
-        dur = wav_duration_ms(wav_path)
-        opus_path = to_opus(wav_path)
+        # Optional leading silence for better playback UX
+        silence_ms = int(os.getenv("FEISHU_VOICE_LEADING_SILENCE_MS", "500"))
+        padded_wav_path = add_leading_silence(wav_path, silence_ms)
+
+        dur = wav_duration_ms(padded_wav_path)
+        opus_path = to_opus(padded_wav_path)
 
         token = get_tenant_access_token()
         file_key = upload_opus(token, opus_path, dur)
@@ -154,6 +195,8 @@ def main() -> int:
         # delete temp artifacts on success path (best-effort)
         if wav_path is not None:
             safe_unlink(wav_path)
+        if padded_wav_path is not None and padded_wav_path != wav_path:
+            safe_unlink(padded_wav_path)
         if opus_path is not None:
             safe_unlink(opus_path)
 
