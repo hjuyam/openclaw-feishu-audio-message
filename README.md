@@ -19,6 +19,14 @@ This repo intentionally **does not** include any models, temp audio artifacts, o
 
 ## Quick start (cross-platform)
 
+We provide a unified CLI entrypoint:
+
+```bash
+python scripts/cli.py doctor
+python scripts/cli.py download-models
+python scripts/cli.py send-test
+```
+
 ### 0) Preflight check
 
 ```bash
