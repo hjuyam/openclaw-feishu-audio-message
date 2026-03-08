@@ -146,6 +146,8 @@ python scripts/cli.py send \
 
 Some clients clip the very beginning of short voice bubbles. We prepend a short silence before encoding.
 
+Note: The default voice model in this repo is a small one, so the speech may sound a bit stiff. If your machine has more CPU/RAM, consider switching to a higher-quality Piper voice/model.
+
 - Default: `FEISHU_VOICE_LEADING_SILENCE_MS=800`
 - Set to `0` to disable.
 
